@@ -1,0 +1,39 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: test-app
+          uri: lb://TEST-APP
+          predicates:
+            - Path=/test/**
+
+        - id: swiggy-app
+          uri: lb://SWIGGY-APP
+          predicates:
+            - Path=/api/v1/swiggy/**
+        - id: category-service
+          uri: lb://CATEGORY-SERVICE
+          predicates:
+            - Path=/api/v1/categories/**
+
+        - id: identity-service
+          uri: lb://IDENTITY-SERVICE
+          predicates:
+            - Path=/auth/**
+
+  application:
+    name: TEST-GATEWAY
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/bsn
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 8089
